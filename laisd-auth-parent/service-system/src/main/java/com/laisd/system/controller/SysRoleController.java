@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(tags = "Role_Management_Interface")
+@Api(tags = "RoleManagement_Interface")
 @RestController
 @RequestMapping("/admin/system/sysRole")
 public class SysRoleController {
@@ -30,7 +30,7 @@ public class SysRoleController {
     }
 
     //2.逻辑删除接口
-    @ApiOperation("Logical_Delete_Interface")
+    @ApiOperation("LogicalDelete_Interface")
     @DeleteMapping("/remove/{id}")
     public Result removeRole(@PathVariable Long id) {
         boolean isSuccess = sysRoleService.removeById(id);
@@ -58,9 +58,13 @@ public class SysRoleController {
     //4.添加角色接口
     @ApiOperation("AddRole_Interface")
     @PostMapping("/save")
-    public Result save(@RequestBody SysRole sysRolerole) {
-        sysRoleService.save(sysRolerole);
-        return Result.ok();
+    public Result save(@RequestBody SysRole sysRole) {
+        boolean isSuccess = sysRoleService.save(sysRole);
+        if (isSuccess) {
+            return Result.ok();
+        } else {
+            return Result.fail();
+        }
     }
 
     // 修改-根据id查询
@@ -74,8 +78,8 @@ public class SysRoleController {
     //5.修改角色接口
     @ApiOperation(value = "UpdateRole_Interface")
     @PutMapping("/update")
-    public Result updateById(@RequestBody SysRole sysRolerole) {
-        boolean isSuccess = sysRoleService.updateById(sysRolerole);
+    public Result updateById(@RequestBody SysRole sysRole) {
+        boolean isSuccess = sysRoleService.updateById(sysRole);
         if (isSuccess) {
             return Result.ok();
         } else {
