@@ -4,7 +4,6 @@
 
 <template>
   <div class="app-container">
-    RoleList
     <!--查询表单-->
     <div class="search-div">
       <el-form label-width="70px" size="small">

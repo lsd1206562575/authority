@@ -29,7 +29,7 @@ export default {
     return request({
       // 接口路径
       url: `${api_name}/getUser/${id}`,
-      method: 'get' // 提交方式
+      method: 'post' // 提交方式
     })
   },
   // 修改
@@ -37,7 +37,7 @@ export default {
     return request({
       // 接口路径
       url: `${api_name}/update`,
-      method: 'post', // 提交方式
+      method: 'put', // 提交方式
       // 参数
       data: user
     })
@@ -51,11 +51,12 @@ export default {
     })
   },
   // 更改用户状态
-  updateStatus(id,status) {
+  updateStatus(id, status) {
     return request({
       // 接口路径
       url: `${api_name}/updateStatus/${id}/${status}`,
       method: 'get' // 提交方式
     })
-  },
+  }
+
 }

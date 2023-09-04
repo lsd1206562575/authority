@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.laisd.common.result.Result;
 import com.laisd.model.system.SysRole;
+import com.laisd.model.vo.AssginRoleVo;
 import com.laisd.model.vo.SysRoleQueryVo;
 import com.laisd.system.service.SysRoleService;
 import io.swagger.annotations.Api;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = "RoleManagement_Interface")
 @RestController
@@ -20,6 +22,20 @@ public class SysRoleController {
 
     @Autowired
     private SysRoleService sysRoleService;
+
+    @ApiOperation(value = "GetUserRoleData_Interface")
+    @GetMapping("/toAssign/{userId}")
+    public Result toAssign(@PathVariable String userId) {
+        Map<String, Object> roleMap = sysRoleService.getRolesByUserId(userId);
+        return Result.ok(roleMap);
+    }
+
+    @ApiOperation(value = "AssignUserRole_Interface")
+    @PostMapping("/doAssign")
+    public Result doAssign(@RequestBody AssginRoleVo assginRoleVo) {
+        sysRoleService.doAssign(assginRoleVo);
+        return Result.ok();
+    }
 
     //1.查询所有记录
     @ApiOperation("SelectAll_Interface")

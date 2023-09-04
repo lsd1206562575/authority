@@ -4,7 +4,6 @@ package com.laisd.system.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.laisd.common.result.Result;
-import com.laisd.model.system.SysRole;
 import com.laisd.model.system.SysUser;
 import com.laisd.model.vo.SysUserQueryVo;
 import com.laisd.system.service.SysUserService;
@@ -86,5 +85,13 @@ public class SysUserController {
             return Result.fail();
         }
     }
+
+    @ApiOperation(value = "updateStatus")
+    @GetMapping("updateStatus/{id}/{status}")
+    public Result updateStatus(@PathVariable Long id, @PathVariable Integer status) {
+        sysUserService.updateStatus(id, status);
+        return Result.ok();
+    }
+
 }
 

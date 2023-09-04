@@ -18,4 +18,6 @@ import com.laisd.model.vo.SysUserQueryVo;
 public interface SysUserService extends IService<SysUser> {
 
     IPage<SysUser> selectPage(Page<SysUser> pageParam, SysUserQueryVo sysUserQueryVo);
+
+    void updateStatus(Long id, Integer status);
 }
