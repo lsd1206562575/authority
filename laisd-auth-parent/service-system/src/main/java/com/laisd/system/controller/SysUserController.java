@@ -4,6 +4,7 @@ package com.laisd.system.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.laisd.common.result.Result;
+import com.laisd.common.utils.MD5;
 import com.laisd.model.system.SysUser;
 import com.laisd.model.vo.SysUserQueryVo;
 import com.laisd.system.service.SysUserService;
@@ -46,6 +47,9 @@ public class SysUserController {
     @ApiOperation("AddUser_Interface")
     @PostMapping("/save")
     public Result save(@RequestBody SysUser sysUser) {
+        String encrypt = MD5.encrypt(sysUser.getPassword());
+        sysUser.setPassword(encrypt);
+
         boolean isSuccess = sysUserService.save(sysUser);
         if (isSuccess) {
             return Result.ok();

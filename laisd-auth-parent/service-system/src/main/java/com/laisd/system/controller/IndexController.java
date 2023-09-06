@@ -1,13 +1,20 @@
 package com.laisd.system.controller;
 
 import com.laisd.common.result.Result;
+import com.laisd.common.result.ResultCodeEnum;
+import com.laisd.common.utils.JwtHelper;
+import com.laisd.common.utils.MD5;
+import com.laisd.model.system.SysUser;
+import com.laisd.model.vo.LoginVo;
+import com.laisd.system.exception.laisdException;
+import com.laisd.system.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +28,9 @@ import java.util.Map;
 @RequestMapping("/admin/system/index")
 public class IndexController {
 
+    @Autowired
+    private SysUserService sysUserService;
+
     /**
      * 登录
      *
@@ -28,9 +38,20 @@ public class IndexController {
      */
     @PostMapping("/login")
     @ApiOperation("UserLogin_Interface")
-    public Result login() {
+    public Result login(@RequestBody LoginVo loginVo) {
+        SysUser sysUser = sysUserService.getUserInfoByUserName(loginVo.getUsername());
+        if(sysUser == null) {
+            throw new laisdException(ResultCodeEnum.ACCOUNT_ERROR);
+        }
+        if(!MD5.encrypt(loginVo.getPassword()).equals(sysUser.getPassword())) {
+            throw new laisdException(ResultCodeEnum.PASSWORD_ERROR);
+        }
+        if(sysUser.getStatus().intValue() == 0) {
+            throw new laisdException(ResultCodeEnum.ACCOUNT_STOP);
+        }
+
         Map<String, Object> map = new HashMap<>();
-        map.put("token", "admin");
+        map.put("token", JwtHelper.createToken(sysUser.getId(), sysUser.getUsername()));
         return Result.ok(map);
     }
 
@@ -41,11 +62,14 @@ public class IndexController {
      */
     @GetMapping("/info")
     @ApiOperation("UserInfo_Interface")
-    public Result info() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("roles", "[admin]");
-        map.put("name", "admin");
-        map.put("avatar", "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+    public Result info(HttpServletRequest request) {
+
+        String token = request.getHeader("token");
+
+        String username = JwtHelper.getUsername(token);
+
+        Map<String, Object> map = sysUserService.getUserInfo(username);
+
         return Result.ok(map);
     }
 
