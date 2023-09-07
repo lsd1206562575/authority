@@ -12,6 +12,13 @@
     <artifactId>service-system</artifactId>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.laisd</groupId>
+            <artifactId>spring-security</artifactId>
+            <version>1.0</version>
+        </dependency>
+
         <dependency>
             <groupId>com.laisd</groupId>
             <artifactId>service-util</artifactId>

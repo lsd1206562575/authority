@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/laisd-auth-parent/common/common-util/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/laisd-auth-parent/common/service-util/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/laisd-auth-parent/common/spring-security/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/laisd-auth-parent/common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/laisd-auth-parent/common/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/laisd-auth-parent/model/src/main/java" charset="UTF-8" />

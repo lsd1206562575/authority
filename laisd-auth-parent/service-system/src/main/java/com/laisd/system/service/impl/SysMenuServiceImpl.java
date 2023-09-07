@@ -5,14 +5,12 @@ import com.laisd.common.result.ResultCodeEnum;
 import com.laisd.model.system.SysMenu;
 import com.laisd.model.system.SysRoleMenu;
 import com.laisd.model.vo.AssginMenuVo;
-import com.laisd.model.vo.RouterVo;
 import com.laisd.system.exception.laisdException;
 import com.laisd.system.mapper.SysMenuMapper;
 import com.laisd.system.mapper.SysRoleMenuMapper;
 import com.laisd.system.service.SysMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.laisd.system.utils.MenuHelper;
-import com.laisd.system.utils.RouterHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -94,40 +92,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         }
     }
 
-    @Override
-    public List<RouterVo> getUserMenuList(String userId) {
-        //超级管理员admin账号id为：1
-        List<SysMenu> sysMenuList = null;
-        if (userId.equals("1")) {
-            sysMenuList = baseMapper.selectList(new QueryWrapper<SysMenu>().eq("status", 1).orderByAsc("sort_value"));
-        } else {
-            sysMenuList = baseMapper.findMenuListUserId(userId);
-        }
-        //构建树形数据
-        List<SysMenu> sysMenuTreeList = MenuHelper.buildTree(sysMenuList);
 
-        //构建路由
-        List<RouterVo> routerVoList = RouterHelper.buildRouters(sysMenuTreeList);
-        return routerVoList;
-    }
-
-    @Override
-    public List<String> getUserButtonList(String userId) {
-        //超级管理员admin账号id为：1
-        List<SysMenu> sysMenuList = null;
-        if (userId.equals("1")) {
-            sysMenuList = baseMapper.selectList(new QueryWrapper<SysMenu>().eq("status", 1));
-        } else {
-            sysMenuList = baseMapper.findMenuListUserId(userId);
-        }
-        //创建返回的集合
-        List<String> permissionList = new ArrayList<>();
-        for (SysMenu sysMenu : sysMenuList) {
-            if(sysMenu.getType() == 2){
-                permissionList.add(sysMenu.getPerms());
-            }
-        }
-        return permissionList;
-    }
 
 }
